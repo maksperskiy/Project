@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home page
+{% endblock %}
+
+{% block body %}
+<main>
+
+
+
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+  <div class="container marketing">
+
+    <div class="row mt-5 pt-5">
+      <div class="col-md-6">
+        <svg class="bd-placeholder-img" width="540" height="320" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+      </div>
+      <div class="col-md-6 py-5">
+        <h2>Заголовок</h2>
+        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+        <p><a class="btn btn-primary" href="#" role="button">Подробнее »</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div>
+
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+
+{% for el in products %}
+    <div class="row featurette">
+      <div class="col-md-3">
+        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="250" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+      </div>
+      <div class="col-md-9">
+        <h2 class="card-title">{{el.title}}</h2>
+        <p class="lead">{{el.desc_opt}}</p>
+        <p><a class="btn btn-primary" href="product/{{el.id}}" role="button">Подробнее »</a></p>
+      </div>
+    </div>
+    <hr class="featurette-divider">
+{% endfor %}
+
+    <!-- /END THE FEATURETTES -->
+
+  </div><!-- /.container -->
+
+</main>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

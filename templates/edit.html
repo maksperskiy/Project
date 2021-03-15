@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="my-5 py-5">Edit product №{{product.id}}</h1>
+    <form method="post">
+        <input type="text" name="title" id="title" class="form-control" placeholder="Title" value="{{product.title}}"><br>
+        <textarea name="desc" id="desc" class="form-control" placeholder="Description">{{product.desc}}</textarea><br>
+        <textarea name="desc_opt" id="desc_opt" class="form-control" placeholder="Optional description">{{product.desc_opt}}</textarea><br>
+        <p class="btn-danger">!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+        <input type="submit" class="btn btn-warning" value="Edit">
+
+    </form>
+</div>
+{% endblock %}

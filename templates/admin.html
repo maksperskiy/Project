@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block body %}
+<br>
+<table class="table table-striped table-sm table-hover my-5 py-5">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Option description</th>
+              <th>visibility</th>
+              <th>price</th>
+              <th>date</th>
+              <th>categories</th>
+              <th>author</th>
+              <th>availability</th>
+              <th>assignment</th>
+              <th>material</th>
+              <th>Option material</th>
+              <th>color</th>
+              <th>Option color</th>
+              <th>size</th>
+              <th>weight</th>
+              <th>guarantee</th>
+              <th>Delete</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for el in products%}
+            <tr>
+              <th>{{el.id}}</th>
+              <th>{{el.title}}</th>
+              <th>{{el.desc}}</th>
+              <th>{{el.desc_opt}}</th>
+              <th>{{el.visibility}}</th>
+              <th>{{el.price}}</th>
+              <th>{{el.date.strftime("%Y-%m-%d-%H.%M.%S")}}</th>
+              <th>{{el.categories}}</th>
+              <th>{{el.author}}</th>
+              <th>{{el.availability}}</th>
+              <th>{{el.assignment}}</th>
+              <th>{{el.material}}</th>
+              <th>{{el.material_opt}}</th>
+              <th>{{el.color}}</th>
+              <th>{{el.color_opt}}</th>
+              <th>{{el.size}}</th>
+              <th>{{el.weight}}</th>
+              <th>{{el.guarantee}}</th>
+              <th><a href="/product/{{el.id}}/del">Delete</a></th>
+              <th><a href="/product/{{el.id}}/edit">Edit</a></th>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+<br>
+<p><a class="btn btn-primary" href="create" role="button">Create new</a></p>
+
+{% endblock %}

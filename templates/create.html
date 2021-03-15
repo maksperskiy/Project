@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add product
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="my-5 py-5">Add product</h1>
+    <form method="post">
+        <input type="text" name="title" id="title" class="form-control" placeholder="Title"><br>
+        <textarea name="desc" id="desc" class="form-control" placeholder="Description"></textarea><br>
+        <textarea name="desc_opt" id="desc_opt" class="form-control" placeholder="Optional description"></textarea><br>
+        <p class="btn-danger">!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+        <input type="submit" class="btn btn-primary" value="Create">
+
+    </form>
+</div>
+{% endblock %}
