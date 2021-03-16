@@ -7,11 +7,24 @@ Add product
 {% block body %}
 <div class="container my-5">
     <h1 class="my-5 py-5">Add product</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <input type="text" name="title" id="title" class="form-control" placeholder="Title"><br>
         <textarea name="desc" id="desc" class="form-control" placeholder="Description"></textarea><br>
         <textarea name="desc_opt" id="desc_opt" class="form-control" placeholder="Optional description"></textarea><br>
-        <p class="btn-danger">!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+        <input type="file" name="image" id="image"><br>
+        <input type="checkbox" name="visibility" id="visibility" class="" checked>visibility<br>
+        <input type="number" name="price" id="price" class="form-control" placeholder="price"><br>
+        <input type="text" name="categories" id="categories" class="form-control" placeholder="categories"><br>
+        <input type="text" name="author" id="author" class="form-control" placeholder="author"><br>
+        <input type="text" name="availability" id="availability" class="form-control" placeholder="availability"><br>
+        <input type="text" name="assignment" id="assignment" class="form-control" placeholder="assignment"><br>
+        <input type="text" name="material" id="material" class="form-control" placeholder="material"><br>
+        <input type="text" name="material_opt" id="material_opt" class="form-control" placeholder="material_opt"><br>
+        <input type="text" name="color" id="color" class="form-control" placeholder="color"><br>
+        <input type="text" name="color_opt" id="color_opt" class="form-control" placeholder="color_opt"><br>
+        <input type="text" name="size" id="size" class="form-control" placeholder="size"><br>
+        <input type="text" name="weight" id="weight" class="form-control" placeholder="weight"><br>
+        <input type="text" name="guarantee" id="guarantee" class="form-control" placeholder="guarantee"><br>
         <input type="submit" class="btn btn-primary" value="Create">
 
     </form>

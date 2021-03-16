@@ -7,11 +7,24 @@ Edit
 {% block body %}
 <div class="container my-5">
     <h1 class="my-5 py-5">Edit product №{{product.id}}</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <input type="text" name="title" id="title" class="form-control" placeholder="Title" value="{{product.title}}"><br>
         <textarea name="desc" id="desc" class="form-control" placeholder="Description">{{product.desc}}</textarea><br>
         <textarea name="desc_opt" id="desc_opt" class="form-control" placeholder="Optional description">{{product.desc_opt}}</textarea><br>
-        <p class="btn-danger">!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+        <input type="file" name="image" id="image"><br>
+        <input type="checkbox" name="visibility" id="visibility" class="" {% if product.visibility==True %}checked{% endif %}>visibility<br>
+        <input type="number" name="price" id="price" class="form-control" placeholder="price" value="{{product.price}}"><br>
+        <input type="text" name="categories" id="categories" class="form-control" placeholder="categories" value="{{product.categories}}"><br>
+        <input type="text" name="author" id="author" class="form-control" placeholder="author" value="{{product.author}}"><br>
+        <input type="text" name="availability" id="availability" class="form-control" placeholder="availability" value="{{product.availability}}"><br>
+        <input type="text" name="assignment" id="assignment" class="form-control" placeholder="assignment" value="{{product.assignment}}"><br>
+        <input type="text" name="material" id="material" class="form-control" placeholder="material" value="{{product.material}}"><br>
+        <input type="text" name="material_opt" id="material_opt" class="form-control" placeholder="material_opt" value="{{product.material_opt}}"><br>
+        <input type="text" name="color" id="color" class="form-control" placeholder="color" value="{{product.color}}"><br>
+        <input type="text" name="color_opt" id="color_opt" class="form-control" placeholder="color_opt" value="{{product.color_opt}}"><br>
+        <input type="text" name="size" id="size" class="form-control" placeholder="size" value="{{product.size}}"><br>
+        <input type="text" name="weight" id="weight" class="form-control" placeholder="weight" value="{{product.weight}}"><br>
+        <input type="text" name="guarantee" id="guarantee" class="form-control" placeholder="guarantee" value="{{product.guarantee}}"><br>
         <input type="submit" class="btn btn-warning" value="Edit">
 
     </form>

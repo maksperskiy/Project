@@ -11,7 +11,11 @@
   <div class="container marketing">
     <div class="row mt-5 pt-5">
       <div class="col-md-6">
+        {% if product.image %}
+        <img src="../{{product.image}}" alt="" width="640" height="640">
+        {% else %}
         <svg class="bd-placeholder-img" width="640" height="640" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+        {% endif %}
       </div>
       <div class="col-md-6 py-5">
         <h2>{{ product.title }}</h2>
@@ -21,6 +25,21 @@
     <div class="row mt-5 pt-5">
       <h2>{{ product.title }}</h2>
       <p>{{ product.desc }}</p>
+
+      {% if product.price %}<p>price - {{product.price}}</p>{% endif %}
+      {% if product.categories %}<p>categories - {{product.categories}}</p>{% endif %}
+      {% if product.author %}<p>author - {{product.author}}</p>{% endif %}
+      {% if product.availability %}<p>availability - {{product.availability}}</p>{% endif %}
+      {% if product.assignment %}<p>assignment - {{product.assignment}}</p>{% endif %}
+      {% if product.material %}<p>material - {{product.material}}</p>{% endif %}
+      {% if product.material_opt %}<p>material_opt - {{product.material_opt}}</p>{% endif %}
+      {% if product.color %}<p>color - {{product.color}}</p>{% endif %}
+      {% if product.color_opt %}<p>color_opt - {{product.color_opt}}</p>{% endif %}
+      {% if product.size %}<p>size - {{product.size}}</p>{% endif %}
+      {% if product.weight %}<p>weight - {{product.weight}}</p>{% endif %}
+      {% if product.guarantee %}<p>guarantee - {{product.guarantee}}</p>{% endif %}
+
+
       <p><b>{{ product.date.strftime("%Y-%m-%d-%H.%M.%S") }}</b></p>
     </div>
   </div>
