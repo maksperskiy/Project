@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{sorted[0].categories}}
+{% endblock %}
+
+{% block body %}
+<main>
+
+
+
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+  <div class="container marketing">
+
+    <!-- START THE FEATURETTES -->
+
+
+{% for el in sorted %}
+    <div class="row featurette mt-5 pt-5">
+      <div class="col-md-3">
+        {% if el.image %}
+        <img src="../{{(el.image.split(' '))[0]}}" alt="" width="250" height="250">
+        {% else %}
+        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="250" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+        {% endif %}
+      </div>
+      <div class="col-md-9">
+        <h2 class="card-title">{{el.title}}</h2>
+        <p class="lead">{{el.desc_opt}}</p>
+        <p><a class="btn btn-primary" href="../product/{{el.id}}" role="button">Подробнее »</a></p>
+      </div>
+    </div>
+    <hr class="featurette-divider">
+{% endfor %}
+
+    <!-- /END THE FEATURETTES -->
+
+  </div><!-- /.container -->
+
+</main>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

@@ -38,7 +38,17 @@ class Product(db.Model):
     guarantee = db.Column(db.String(250), nullable=True)
 
     def __repr__(self):
-        return 'Article %r' % self.id
+        return 'Product %r' % self.id
+
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer)
+    name = db.Column(db.String(25))
+    phone = db.Column(db.String(15))
+    comment = db.Column(db.Text, nullable=True)
+    processed = db.Column(db.Boolean, default=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 def allowed_file(filename):
@@ -48,7 +58,14 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     products = Product.query.order_by(Product.date).all()
-    return render_template("index.html", products=products)
+    categories = []
+    authors = []
+    for product in products:
+        categories.append(product.categories)
+        authors.append(product.author)
+    categories = list(set(categories))
+    authors = list(set(authors))
+    return render_template("index.html", products=products, categories=categories, authors=authors)
 
 
 @app.route('/product/<int:id>')
@@ -57,11 +74,32 @@ def product(id):
     return render_template("product.html", product=product)
 
 
+@app.route('/category/<category>')
+def category_product(category):
+    products = Product.query.all()
+    sorted = []
+    for product in products:
+        if category == product.categories:
+            sorted.append(product)
+    return render_template("category.html", sorted=sorted)
+
+
+@app.route('/author/<author>')
+def author_product(author):
+    products = Product.query.all()
+    sorted = []
+    for product in products:
+        if author == product.author:
+            sorted.append(product)
+    return render_template("author.html", sorted=sorted)
+
+
 @app.route('/admin')
 @auth_required
 def admin():
     products = Product.query.order_by(Product.date).all()
-    return render_template("admin.html", products=products)
+    orders = Order.query.order_by(Order.date).all()
+    return render_template("admin.html", products=products, orders=orders)
 
 
 @app.route('/create', methods=['POST', 'GET'])
@@ -71,7 +109,7 @@ def create():
         title = request.form['title']
         desc = request.form['desc']
         desc_opt = request.form['desc_opt']
-        image = request.files['image']
+        images = request.files.getlist('image[]')
         visibility = True if request.form.get('visibility') else False
         price = request.form['price']
         categories = request.form['categories']
@@ -86,17 +124,19 @@ def create():
         weight = request.form['weight']
         guarantee = request.form['guarantee']
 
-        filename = ''
+        files = ''
 
-        if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(os.path.join(os.path.abspath(os.curdir), 'images', filename))
-            filename = 'images/' + str(filename)
+        for image in images:
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(os.path.abspath(os.curdir), 'images', filename))
+                files += 'images/' + str(filename) + ' '
+                print(filename)
 
         product = Product(title=title,
                           desc=desc,
                           desc_opt=desc_opt,
-                          image=filename,
+                          image=files,
                           visibility=visibility,
                           price=price,
                           categories=categories,
@@ -143,11 +183,17 @@ def edit(id):
         product.weight = request.form['weight']
         product.guarantee = request.form['guarantee']
 
-        image = request.files['image']
-        if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(os.path.join(os.path.abspath(os.curdir), 'images', filename))
-            product.image = 'images/' + str(filename)
+        images = request.files.getlist('image[]')
+        files = ''
+
+        for image in images:
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(os.path.abspath(os.curdir), 'images', filename))
+                files += 'images/' + str(filename) + ' '
+                print(filename)
+
+        product.image = files
 
         try:
             db.session.commit()
@@ -173,6 +219,39 @@ def delete(id):
 @app.route('/images/<filename>')
 def uploaded_file(filename):
     return send_from_directory('images/', filename)
+
+
+@app.route('/buy/<int:product_id>', methods=['POST'])
+def buy(product_id):
+    name = request.form['name']
+    phone = request.form['phone']
+    comment = request.form['comment']
+
+    order = Order(product_id=product_id,
+                      name=name,
+                      phone=phone,
+                      comment=comment)
+
+    try:
+        db.session.add(order)
+        db.session.commit()
+        return "OK" #---------------------------------
+    except:
+        return "ERROR"
+
+
+@app.route('/order/<int:id>/process')
+@auth_required
+def order_process(id):
+    order = Order.query.get(id)
+
+    order.processed = not order.processed
+
+    try:
+        db.session.commit()
+        return redirect('/admin')
+    except:
+        return "ERROR"
 
 
 if __name__ == '__main__':

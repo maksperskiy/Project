@@ -11,7 +11,7 @@ Edit
         <input type="text" name="title" id="title" class="form-control" placeholder="Title" value="{{product.title}}"><br>
         <textarea name="desc" id="desc" class="form-control" placeholder="Description">{{product.desc}}</textarea><br>
         <textarea name="desc_opt" id="desc_opt" class="form-control" placeholder="Optional description">{{product.desc_opt}}</textarea><br>
-        <input type="file" name="image" id="image"><br>
+        <input type="file" name="image[]" id="image" multiple><br>
         <input type="checkbox" name="visibility" id="visibility" class="" {% if product.visibility==True %}checked{% endif %}>visibility<br>
         <input type="number" name="price" id="price" class="form-control" placeholder="price" value="{{product.price}}"><br>
         <input type="text" name="categories" id="categories" class="form-control" placeholder="categories" value="{{product.categories}}"><br>
