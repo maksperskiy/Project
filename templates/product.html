@@ -25,6 +25,8 @@
         <form action="/buy/{{product.id}}" method="post">
           <input type="text" name="name" id="name" class="form-control" placeholder="Name"><br>
           <input type="tel" name="phone" id="phone" class="form-control" placeholder="Phone"><br>
+          <input type="text" name="post_index" id="post_index" class="form-control" placeholder="Post index"><br>
+          <input type="text" name="address" id="address" class="form-control" placeholder="Address"><br>
           <textarea name="comment" id="comment" class="form-control" placeholder="Comment"></textarea><br>
           <input type="submit" value="Buy">
         </form>
@@ -53,6 +55,15 @@
   </div>
 
 </main>
+{% if success == 1 %}
+<script>
+  alert("Success!");
+</script>
+{% elif success == 2 %}
+<script>
+  alert("Fail!");
+</script>
+{% endif %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, make_response, redirect, send_from_directory
+from flask_paginate import Pagination, get_page_parameter
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
 import os
@@ -48,6 +49,8 @@ class Order(db.Model):
     product_id = db.Column(db.Integer)
     name = db.Column(db.String(25))
     phone = db.Column(db.String(15))
+    address = db.Column(db.String(50))
+    post_index = db.Column(db.String(10), nullable=True)
     comment = db.Column(db.Text, nullable=True)
     processed = db.Column(db.Boolean, default=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -120,24 +123,23 @@ def search():
                 sorted.append(p)
         sorted = list(set(sorted))
         if not sorted:
-            return "Not found"
+            return render_template("not_found.html")
     return render_template("search.html", sorted=sorted, search=search)
 
 
 @app.route('/product/<int:id>')
-def product(id):
+def product(id, success=0):
     product = Product.query.get(id)
-    if not product.visibility:
-        return "Not found"
-    return render_template("product.html", product=product)
+    if not product or not product.visibility:
+        return render_template("not_found.html")
+    return render_template("product.html", product=product, success=success)
 
 
-@app.route('/all_products/')
-def all_products():
-    products = Product.query.filter(Product.visibility==True).order_by(Product.date).all()
+@app.route('/all_products/<int:page_num>')
+def all_products(page_num):
+    products = Product.query.filter(Product.visibility==True).order_by(Product.date).paginate(per_page=2, page=page_num, error_out=True)
 
-    return render_template("all_products.html", products=products)
-
+    return render_template('all_products.html', products=products)
 
 @app.route('/categories/')
 def categories():
@@ -166,6 +168,8 @@ def category_product(category):
     for product in products:
         if category == product.categories and product.visibility:
             sorted.append(product)
+    if not sorted:
+        return render_template("not_found.html")
     return render_template("category.html", sorted=sorted)
 
 
@@ -177,7 +181,7 @@ def author_product(author):
         if author == product.author and product.visibility:
             sorted.append(product)
     if not sorted:
-        return "Not found"
+        return render_template("not_found.html")
     return render_template("author.html", sorted=sorted)
 
 
@@ -312,19 +316,24 @@ def uploaded_file(filename):
 def buy(product_id):
     name = request.form['name']
     phone = request.form['phone']
+    address = request.form['address']
+    post_index = request.form['post_index']
     comment = request.form['comment']
 
-    order = Order(product_id=product_id,
-                  name=name,
-                  phone=phone,
-                  comment=comment)
+    if name and phone and address:
+        order = Order(product_id=product_id,
+                      name=name,
+                      phone=phone,
+                      address=address,
+                      post_index=post_index,
+                      comment=comment)
 
     try:
         db.session.add(order)
         db.session.commit()
-        return "OK"  # ---------------------------------
+        return product(product_id, success=1)
     except:
-        return "ERROR"
+        return product(product_id, success=2)
 
 
 @app.route('/order/<int:id>/process')
@@ -335,6 +344,18 @@ def order_process(id):
     order.processed = not order.processed
 
     try:
+        db.session.commit()
+        return redirect('/admin')
+    except:
+        return "ERROR"
+
+
+@app.route('/order/<int:id>/del')
+@auth_required
+def order_delete(id):
+    order = Order.query.get_or_404(id)
+    try:
+        db.session.delete(order)
         db.session.commit()
         return redirect('/admin')
     except:

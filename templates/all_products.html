@@ -10,10 +10,10 @@ All products
 
     <div class="row mt-5 pt-5">
       <p>All products</p>
-      {% for el in products %}
+      {% for el in products.items %}
         <div class="col">
           {% if el.image %}
-          <img src="{{(el.image.split(' '))[0]}}" alt="" width="200" height="200">
+          <img src="../{{(el.image.split(' '))[0]}}" alt="" width="200" height="200">
           {% else %}
           <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="200" height="200" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
           {% endif %}
@@ -29,6 +29,28 @@ All products
     <hr class="featurette-divider">
       {% endfor %}
     </div>
+
+      {% if products.has_prev %}
+      <a href="{{ url_for('all_products', page_num=products.prev_num) }}"><-</a>
+      {% else %}
+        <strong><-</strong>
+      {% endif %}
+    {% for page in products.iter_pages(left_edge=3, right_edge=4) %}
+
+      {% if page %}
+        {% if page != products.page %}
+          <a href="{{ url_for('all_products', page_num=page) }}">{{ page }}</a>
+        {% else %}
+        <strong>{{ page }}</strong>
+      {% endif %}
+      {% endif %}
+    {% endfor %}
+      {% if products.has_next %}
+      <a href="{{ url_for('all_products', page_num=products.next_num) }}">-></a>
+      {% else %}
+        <strong>-></strong>
+      {% endif %}
+    <hr class="featurette-divider">
 
     <!-- /END THE FEATURETTES -->
 

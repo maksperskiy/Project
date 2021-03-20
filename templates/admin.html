@@ -74,9 +74,13 @@ Admin
               <th>Date</th>
               <th>Name</th>
               <th>Phone</th>
+              <th>Address</th>
+              <th>Post index</th>
               <th>Comment</th>
               <th>Processed</th>
               <th>To process</th>
+              <th>---</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -87,9 +91,13 @@ Admin
               <th>{{el.date.strftime("%Y-%m-%d-%H.%M.%S")}}</th>
               <th>{{el.name}}</th>
               <th>{{el.phone}}</th>
+              <th>{{el.address}}</th>
+              <th>{{el.post_index}}</th>
               <th>{{el.comment}}</th>
               <th>{{el.processed}}</th>
               <th><a href="/order/{{el.id}}/process">{% if el.processed==False %}Process{% else %}Cancel process{% endif %}</a></th>
+              <th>---</th>
+              <th><a href="/order/{{el.id}}/del">Delete</a></th>
             </tr>
             {% endfor %}
 
