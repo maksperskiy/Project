@@ -14,6 +14,7 @@ Admin
               <th>Description</th>
               <th>Option description</th>
               <th>visibility</th>
+              <th>Hide/Show</th>
               <th>price</th>
               <th>date</th>
               <th>image</th>
@@ -40,6 +41,7 @@ Admin
               <th>{{el.desc}}</th>
               <th>{{el.desc_opt}}</th>
               <th>{{el.visibility}}</th>
+              <th><a href="/product/{{el.id}}/visibility">{% if el.visibility==False %}Show{% else %}Hide{% endif %}</a></th>
               <th>{{el.price}}</th>
               <th>{{el.date.strftime("%Y-%m-%d-%H.%M.%S")}}</th>
               <th>{{el.image}}</th>

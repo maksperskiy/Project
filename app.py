@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, make_response, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import func
 import os
+import random
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -57,21 +59,104 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    products = Product.query.order_by(Product.date).all()
+    products = Product.query.filter(Product.visibility==True).filter(Product.categories!="").order_by(Product.date).all()
+
+    four_popular_products = db.session.query(Product)\
+        .outerjoin(Order, Product.id == Order.product_id)\
+        .filter(Product.date >= datetime(datetime.today().year, datetime.today().month, day=1)) \
+        .filter(Product.visibility == True) \
+        .group_by(Product.id)\
+        .order_by(db.func.count(Order.product_id).desc())\
+        .limit(4).all()
+
+    four_products = Product.query.filter(Product.visibility == True).order_by(func.random()).limit(4).all()
+
+    four_new_products = Product.query.filter(Product.visibility == True).order_by(Product.date.desc()).limit(4).all()
+
     categories = []
-    authors = []
+    cat_images = []
     for product in products:
         categories.append(product.categories)
-        authors.append(product.author)
-    categories = list(set(categories))
-    authors = list(set(authors))
-    return render_template("index.html", products=products, categories=categories, authors=authors)
+        cat_images.append(product.image)
+
+    cat_img = dict(zip(categories, cat_images))
+    keys = list(set(cat_img.keys()))
+    random.shuffle(keys)
+    cat_img_shuffled = dict()
+    for key in keys:
+        cat_img_shuffled.update({key: cat_img[key]})
+
+    categories = []
+    cat_images = []
+    for c, i in cat_img_shuffled.items():
+        categories.append(c)
+        cat_images.append(i)
+
+    return render_template("index.html",
+                           four_popular_products=four_popular_products,
+                           four_products=four_products,
+                           four_new_products=four_new_products,
+                           categories=categories[:5],
+                           cat_images=cat_images[:5])
+
+
+@app.route('/search/', methods=['POST'])
+def search():
+    if request.method == "POST":
+        products = Product.query.order_by(Product.date).all()
+        search = request.form['search'].lower()
+        sorted = []
+        for p in products:
+            if (search in p.title.lower() \
+                    or search in p.desc.lower() \
+                    or search in p.desc_opt.lower() \
+                    or search in p.author.lower() \
+                    or search in p.categories.lower() \
+                    or search in p.material.lower() \
+                    or search in p.material_opt.lower() \
+                    or search in p.color.lower() \
+                    or search in p.color_opt.lower()) \
+                    and p.visibility:
+                sorted.append(p)
+        sorted = list(set(sorted))
+        if not sorted:
+            return "Not found"
+    return render_template("search.html", sorted=sorted, search=search)
 
 
 @app.route('/product/<int:id>')
 def product(id):
     product = Product.query.get(id)
+    if not product.visibility:
+        return "Not found"
     return render_template("product.html", product=product)
+
+
+@app.route('/all_products/')
+def all_products():
+    products = Product.query.filter(Product.visibility==True).order_by(Product.date).all()
+
+    return render_template("all_products.html", products=products)
+
+
+@app.route('/categories/')
+def categories():
+    products = Product.query.filter(Product.visibility==True).filter(Product.categories!="").all()
+    categories = []
+    cat_images = []
+    for product in products:
+        categories.append(product.categories)
+        cat_images.append(product.image)
+
+    cat_img = dict(zip(categories, cat_images))
+
+    categories = []
+    cat_images = []
+    for c, i in cat_img.items():
+        categories.append(c)
+        cat_images.append(i)
+
+    return render_template("categories.html", categories=categories, cat_images=cat_images)
 
 
 @app.route('/category/<category>')
@@ -79,7 +164,7 @@ def category_product(category):
     products = Product.query.all()
     sorted = []
     for product in products:
-        if category == product.categories:
+        if category == product.categories and product.visibility:
             sorted.append(product)
     return render_template("category.html", sorted=sorted)
 
@@ -89,8 +174,10 @@ def author_product(author):
     products = Product.query.all()
     sorted = []
     for product in products:
-        if author == product.author:
+        if author == product.author and product.visibility:
             sorted.append(product)
+    if not sorted:
+        return "Not found"
     return render_template("author.html", sorted=sorted)
 
 
@@ -228,14 +315,14 @@ def buy(product_id):
     comment = request.form['comment']
 
     order = Order(product_id=product_id,
-                      name=name,
-                      phone=phone,
-                      comment=comment)
+                  name=name,
+                  phone=phone,
+                  comment=comment)
 
     try:
         db.session.add(order)
         db.session.commit()
-        return "OK" #---------------------------------
+        return "OK"  # ---------------------------------
     except:
         return "ERROR"
 
@@ -252,6 +339,21 @@ def order_process(id):
         return redirect('/admin')
     except:
         return "ERROR"
+
+
+@app.route('/product/<int:id>/visibility')
+@auth_required
+def product_visibility(id):
+    product = Product.query.get(id)
+
+    product.visibility = not product.visibility
+
+    try:
+        db.session.commit()
+        return redirect('/admin')
+    except:
+        return "ERROR"
+#db.session.query(Product.id, db.func.count(Order.product_id)).outerjoin(Order, Product.id == Order.product_id).filter(Product.date >= datetime(datetime.today().year, datetime.today().month, day=1)).group_by(Product.id).order_by(db.func.count(Order.product_id).desc()).limit(4).all()
 
 
 if __name__ == '__main__':
