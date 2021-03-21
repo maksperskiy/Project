@@ -51,6 +51,7 @@ class Order(db.Model):
     phone = db.Column(db.String(15))
     address = db.Column(db.String(50))
     post_index = db.Column(db.String(10), nullable=True)
+    email = db.Column(db.String(25))
     comment = db.Column(db.Text, nullable=True)
     processed = db.Column(db.Boolean, default=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -62,14 +63,15 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    products = Product.query.filter(Product.visibility==True).filter(Product.categories!="").order_by(Product.date).all()
+    products = Product.query.filter(Product.visibility == True).filter(Product.categories != "").order_by(
+        Product.date).all()
 
-    four_popular_products = db.session.query(Product)\
-        .outerjoin(Order, Product.id == Order.product_id)\
+    four_popular_products = db.session.query(Product) \
+        .outerjoin(Order, Product.id == Order.product_id) \
         .filter(Product.date >= datetime(datetime.today().year, datetime.today().month, day=1)) \
         .filter(Product.visibility == True) \
-        .group_by(Product.id)\
-        .order_by(db.func.count(Order.product_id).desc())\
+        .group_by(Product.id) \
+        .order_by(db.func.count(Order.product_id).desc()) \
         .limit(4).all()
 
     four_products = Product.query.filter(Product.visibility == True).order_by(func.random()).limit(4).all()
@@ -111,14 +113,14 @@ def search():
         sorted = []
         for p in products:
             if (search in p.title.lower() \
-                    or search in p.desc.lower() \
-                    or search in p.desc_opt.lower() \
-                    or search in p.author.lower() \
-                    or search in p.categories.lower() \
-                    or search in p.material.lower() \
-                    or search in p.material_opt.lower() \
-                    or search in p.color.lower() \
-                    or search in p.color_opt.lower()) \
+                or search in p.desc.lower() \
+                or search in p.desc_opt.lower() \
+                or search in p.author.lower() \
+                or search in p.categories.lower() \
+                or search in p.material.lower() \
+                or search in p.material_opt.lower() \
+                or search in p.color.lower() \
+                or search in p.color_opt.lower()) \
                     and p.visibility:
                 sorted.append(p)
         sorted = list(set(sorted))
@@ -137,13 +139,16 @@ def product(id, success=0):
 
 @app.route('/all_products/<int:page_num>')
 def all_products(page_num):
-    products = Product.query.filter(Product.visibility==True).order_by(Product.date).paginate(per_page=2, page=page_num, error_out=True)
+    products = Product.query.filter(Product.visibility == True).order_by(Product.date).paginate(per_page=2,
+                                                                                                page=page_num,
+                                                                                                error_out=True)
 
     return render_template('all_products.html', products=products)
 
+
 @app.route('/categories/')
 def categories():
-    products = Product.query.filter(Product.visibility==True).filter(Product.categories!="").all()
+    products = Product.query.filter(Product.visibility == True).filter(Product.categories != "").all()
     categories = []
     cat_images = []
     for product in products:
@@ -318,15 +323,21 @@ def buy(product_id):
     phone = request.form['phone']
     address = request.form['address']
     post_index = request.form['post_index']
+    email = request.form['email']
     comment = request.form['comment']
 
     if name and phone and address:
-        order = Order(product_id=product_id,
-                      name=name,
-                      phone=phone,
-                      address=address,
-                      post_index=post_index,
-                      comment=comment)
+        if len(name) <= 30 and \
+                len(address) <= 30 and \
+                len(post_index) <= 6 and \
+                len(email) <= 25:
+            order = Order(product_id=product_id,
+                          name=name,
+                          phone=phone,
+                          address=address,
+                          email=email,
+                          post_index=post_index,
+                          comment=comment)
 
     try:
         db.session.add(order)
@@ -374,7 +385,9 @@ def product_visibility(id):
         return redirect('/admin')
     except:
         return "ERROR"
-#db.session.query(Product.id, db.func.count(Order.product_id)).outerjoin(Order, Product.id == Order.product_id).filter(Product.date >= datetime(datetime.today().year, datetime.today().month, day=1)).group_by(Product.id).order_by(db.func.count(Order.product_id).desc()).limit(4).all()
+
+
+# db.session.query(Product.id, db.func.count(Order.product_id)).outerjoin(Order, Product.id == Order.product_id).filter(Product.date >= datetime(datetime.today().year, datetime.today().month, day=1)).group_by(Product.id).order_by(db.func.count(Order.product_id).desc()).limit(4).all()
 
 
 if __name__ == '__main__':

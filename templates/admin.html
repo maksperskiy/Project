@@ -76,6 +76,7 @@ Admin
               <th>Phone</th>
               <th>Address</th>
               <th>Post index</th>
+              <th>Email</th>
               <th>Comment</th>
               <th>Processed</th>
               <th>To process</th>
@@ -93,6 +94,7 @@ Admin
               <th>{{el.phone}}</th>
               <th>{{el.address}}</th>
               <th>{{el.post_index}}</th>
+              <th>{{el.email}}</th>
               <th>{{el.comment}}</th>
               <th>{{el.processed}}</th>
               <th><a href="/order/{{el.id}}/process">{% if el.processed==False %}Process{% else %}Cancel process{% endif %}</a></th>
