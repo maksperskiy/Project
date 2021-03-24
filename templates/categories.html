@@ -5,23 +5,31 @@
 {% endblock %}
 
 {% block body %}
-<main style="color: #000000">
-  <div class="container marketing">
 
-<div class="row mt-5 pt-5">
-        <p>Categories</p>
-    {% for index in range(categories|length) %}
-      <div class="col">
-        <a href="{{ url_for('category_product', category=categories[index]) }}">{{categories[index]}}</a>
-        <img src="{{ url_for('static', filename=cat_images[index]) }}" alt="" width="50" height="50">
-      </div>
-    {% endfor %}
+<div class="page">
+        <div class="container">
+            <div class="page__content">
+                <section class="goods-categories">
+                    <div class="goods-categories__title">Категории</div>
+
+
+                    <div class="goods-categorie__cards">
+                        {% for index in range(categories|length) %}
+                        <div class="goods-categorie__card">
+                            <a href="{{ url_for('category_product', category=categories[index]) }}" class="goods-categorie__link">
+                                <div class="goods-categorie__title">{{categories[index]}}</div>
+                                <div class="goods-categorie__img">
+                                    <img src="{{ url_for('static', filename=cat_images[index]) }}" alt="card" class="goods-categorie__photo">
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </section>
+            </div>
+        </div>
     </div>
 
-    <!-- /END THE FEATURETTES -->
-
-  </div><!-- /.container -->
-
-</main>
 
 {% endblock %}

@@ -5,57 +5,65 @@ All products
 {% endblock %}
 
 {% block body %}
-<main style="color: #000000">
-  <div class="container marketing">
 
-    <div class="row mt-5 pt-5">
-      <p>All products</p>
-      {% for el in products.items %}
-        <div class="col">
-          {% if el.image %}
-          <img src="{{ url_for('static', filename=(el.image.split(' '))[0]) }}" alt="" width="200" height="200">
-          {% else %}
-          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="200" height="200" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-          {% endif %}
+    <div class="page">
+        <div class="container">
+            <div class="page__content">
+                <section class="all-goods">
+                    <div class="all-goods__title">Все товары</div>
+
+                    <div class="cards">
+
+                        {% for el in products.items %}
+                        <div class="card">
+                            <a href="{{ url_for('product', id=el.id) }}" class="card__link">
+                                <div class="card__top">
+                                    <img src="{{ url_for('static', filename=(el.image.split(' '))[0]) }}" alt="card" class="card__img">
+                                </div>
+
+                                <div class="card__bottom">
+                                    <div class="card__title">{{el.title}}</div>
+                                    <div class="card__text">{{el.desc_opt}}</div>
+                                    <div class="card__price">Цена:<span>{{el.price}} бел.руб</span></div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="pagination">
+                        <div class="pagination__content">
+
+                            {% if products.has_prev %}
+                                <a href="{{ url_for('all_products', page_num=products.prev_num) }}" class="pagination__button-left pagination__button">Prev</a>
+                            {% else %}
+                                <a href="#" class="pagination__button-left pagination__button">Prev</a>
+                            {% endif %}
+
+                            {% for page in products.iter_pages(left_edge=3, right_edge=4) %}
+                            {% if page %}
+                                {% if page != products.page %}
+                                <a href="{{ url_for('all_products', page_num=page) }}" class="pagination__item">{{ page }}</a>
+                                {% else %}
+                                <a href="#" class="pagination__item">{{ page }}</a>
+                                {% endif %}
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if products.has_next %}
+                                <a href="{{ url_for('all_products', page_num=products.next_num) }}" class="pagination__button-right pagination__button">Next</a>
+                            {% else %}
+                                <a href="#" class="pagination__button-right pagination__button">Next</a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
-        <div class="col">
-          <h2 class="card-title">{{el.title}}</h2>
-          <p class="lead">{{el.desc_opt}}</p>
-          {% if el.price %}
-          <p class="lead">Price - {{el.price}}</p>
-          {% endif %}
-          <p><a class="btn btn-primary" href="{{ url_for('product', id=el.id) }}" role="button">Подробнее »</a></p>
-        </div>
-    <hr class="featurette-divider">
-      {% endfor %}
     </div>
 
-      {% if products.has_prev %}
-      <a href="{{ url_for('all_products', page_num=products.prev_num) }}"><-</a>
-      {% else %}
-        <strong><-</strong>
-      {% endif %}
-    {% for page in products.iter_pages(left_edge=3, right_edge=4) %}
-
-      {% if page %}
-        {% if page != products.page %}
-          <a href="{{ url_for('all_products', page_num=page) }}">{{ page }}</a>
-        {% else %}
-        <strong>{{ page }}</strong>
-      {% endif %}
-      {% endif %}
-    {% endfor %}
-      {% if products.has_next %}
-      <a href="{{ url_for('all_products', page_num=products.next_num) }}">-></a>
-      {% else %}
-        <strong>-></strong>
-      {% endif %}
-    <hr class="featurette-divider">
-
-    <!-- /END THE FEATURETTES -->
-
-  </div><!-- /.container -->
-
-</main>
 
 {% endblock %}

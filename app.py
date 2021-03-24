@@ -145,7 +145,7 @@ def product(id, success=0):
 
 @app.route('/all_products/<int:page_num>')
 def all_products(page_num=1):
-    products = Product.query.filter(Product.visibility == True).order_by(Product.date).paginate(per_page=2,
+    products = Product.query.filter(Product.visibility == True).order_by(Product.date).paginate(per_page=12,
                                                                                                 page=page_num,
                                                                                                 error_out=True)
 
@@ -397,4 +397,4 @@ def product_visibility(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4568)
+    app.run(debug=True, host='localhost', port=4567)
