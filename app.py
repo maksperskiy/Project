@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, send_from_directory
+from flask import Flask, render_template, request, make_response, redirect, send_from_directory, url_for
 from flask_paginate import Pagination, get_page_parameter
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
@@ -82,7 +82,7 @@ def index():
     cat_images = []
     for product in products:
         categories.append(product.categories)
-        cat_images.append(product.image)
+        cat_images.append((product.image.split(' '))[0])
 
     cat_img = dict(zip(categories, cat_images))
     keys = list(set(cat_img.keys()))
@@ -134,11 +134,17 @@ def product(id, success=0):
     product = Product.query.get(id)
     if not product or not product.visibility:
         return render_template("not_found.html")
-    return render_template("product.html", product=product, success=success)
+
+    four_products = Product.query\
+        .filter(Product.categories == product.categories)\
+        .filter(Product.title != product.title)\
+        .limit(4).all()
+
+    return render_template("product.html", product=product, success=success, four_products=four_products)
 
 
 @app.route('/all_products/<int:page_num>')
-def all_products(page_num):
+def all_products(page_num=1):
     products = Product.query.filter(Product.visibility == True).order_by(Product.date).paginate(per_page=2,
                                                                                                 page=page_num,
                                                                                                 error_out=True)
@@ -161,7 +167,7 @@ def categories():
     cat_images = []
     for c, i in cat_img.items():
         categories.append(c)
-        cat_images.append(i)
+        cat_images.append((i.split(' '))[0])
 
     return render_template("categories.html", categories=categories, cat_images=cat_images)
 
@@ -225,8 +231,8 @@ def create():
         for image in images:
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
-                image.save(os.path.join(os.path.abspath(os.curdir), 'images', filename))
-                files += 'images/' + str(filename) + ' '
+                image.save(os.path.join(os.path.abspath(os.curdir), 'static\\images\\dest\\photo', filename))
+                files += 'images/dest/photo/' + str(filename) + ' '
                 print(filename)
 
         product = Product(title=title,
@@ -285,8 +291,8 @@ def edit(id):
         for image in images:
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
-                image.save(os.path.join(os.path.abspath(os.curdir), 'images', filename))
-                files += 'images/' + str(filename) + ' '
+                image.save(os.path.join(os.path.abspath(os.curdir), 'static\\images\\dest\\photo', filename))
+                files += 'images/dest/photo/' + str(filename) + ' '
                 print(filename)
 
         product.image = files
@@ -314,7 +320,7 @@ def delete(id):
 
 @app.route('/images/<filename>')
 def uploaded_file(filename):
-    return send_from_directory('images/', filename)
+    return send_from_directory('/images/', filename)
 
 
 @app.route('/buy/<int:product_id>', methods=['POST'])
@@ -391,4 +397,4 @@ def product_visibility(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4567)
+    app.run(debug=True, port=4568)

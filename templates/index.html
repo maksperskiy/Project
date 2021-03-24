@@ -5,97 +5,186 @@ Home page
 {% endblock %}
 
 {% block body %}
-<main>
+
+<div class="page">
+        <div class="container">
+            <div class="page__content">
+                <!-- <section class="slider">
+                    <div class="slider__item">
+                        <img src="images/dest/photo/slider-img.jpg" alt="slider__img" class="slider__img">
+
+                        <div class="slider__info">
+                            <div class="slider__title">Скидки на все товары до 50% только в этом месяце</div>
+                            <div class="slider__text">Не упусти свой шанс!</div>
+                            <a href="#" class="slider__btn">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <div class="slider__item">
+                        <img src="images/dest/photo/slider-img.jpg" alt="slider-img" class="slider__img">
+
+                        <div class="slider__info">
+                            <div class="slider__title">Скидки на все товары до 50% только в этом месяце</div>
+                            <div class="slider__text">Не упусти свой шанс!</div>
+                            <a href="#" class="slider__btn">Подробнее</a>
+                        </div>
+                    </div>
+                </section> -->
 
 
+                <section class="popular-goods">
+                    <div class="popular-goods__title">Популярные товары</div>
 
-  <!-- Marketing messaging and featurettes
-  ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
+                    <div class="cards">
+                        {% for el in four_popular_products %}
+                        <div class="card">
+                            <a href="{{ url_for('product', id=el.id) }}" class="card__link">
+                                <div class="card__top">
+                                    <img src="{{ url_for('static', filename=(el.image.split(' '))[0]) }}" alt="card" class="card__img">
+                                    <div class="card__type type_popular">popular</div>
+                                </div>
 
-  <div class="container marketing">
+                                <div class="card__bottom">
+                                    <div class="card__title">{{el.title}}</div>
+                                    <div class="card__text">{{el.desc_opt}}</div>
+                                    <div class="card__price price_popular">Цена:<span>{{ el.price }} бел.руб</span></div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
 
-    <hr class="featurette-divider mt-5 pt-5">
 
-    <div class="row featurette">
-        <p>Popular products</p>
-{% for el in four_popular_products %}
-      <div class="col   ">
-        {% if el.image %}
-        <img src="{{(el.image.split(' '))[0]}}" alt="" width="70" height="70">
-        {% else %}
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="70" height="70" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-        {% endif %}
-      </div>
-      <div class="col">
-        <h2 class="card-title">{{el.title}}</h2>
-        <!--<p class="lead">{{el.desc_opt}}</p>-->
-        <p><a class="btn btn-primary" href="product/{{el.id}}" role="button">Подробнее »</a></p>
-      </div>
-{% endfor %}
+                    </div>
+                </section>
+
+                <section class="categories">
+                    <div class="categories__title">Категории</div>
+
+                    <div class="categories__columns">
+                        <div class="categories__col">
+                            {% for i in range(2) %}
+                            <div class="categorie__item">
+                                <img class="categorie__img" src="{{ url_for('static', filename=cat_images[i]) }}" alt="categogrie__img">
+
+                                <div class="categorie__layer">
+                                    <div class="categorie__info">
+                                        <div class="categorie__title">{{ categories[i] }}</div>
+
+                                        <a href="{{ url_for('category_product', category=categories[i]) }}" class="categorie__button">Посмотреть</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="categories__col">
+                            <div class="categorie__item">
+                                <img class="categorie__img" src="{{ url_for('static', filename=cat_images[2]) }}" alt="categogrie__img">
+
+                                <div class="categorie__layer">
+                                    <div class="categorie__info">
+                                        <div class="categorie__title">{{ categories[2] }}</div>
+
+                                        <a href="{{ url_for('category_product', category=categories[2]) }}" class="categorie__button">Посмотреть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="categories__col">
+                            <div class="categorie__item">
+                                <img class="categorie__img" src="{{ url_for('static', filename=cat_images[3]) }}" alt="categogrie__img">
+
+                                <div class="categorie__layer">
+                                    <div class="categorie__info">
+                                        <div class="categorie__title">{{ categories[3] }}</div>
+
+                                        <a href="{{ url_for('category_product', category=categories[3]) }}" class="categorie__button">Посмотреть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="categories__col">
+                            <div class="categorie__item">
+                                <img class="categorie__img" src="{{ url_for('static', filename=cat_images[4]) }}" alt="categogrie__img">
+
+                                <div class="categorie__layer">
+                                    <div class="categorie__info">
+                                        <div class="categorie__title">{{ categories[4] }}</div>
+
+                                        <a href="{{ url_for('category_product', category=categories[4]) }}" class="categorie__button">Посмотреть</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="categorie__item">
+                                <img class="categorie__img" src="{{ url_for('static', filename='images/dest/photo/all_cat_img.jpg') }}" alt="categogrie__img">
+
+                                <div class="categorie__layer">
+                                    <div class="categorie__info">
+                                        <a href="{{ url_for('categories') }}" class="categorie__button">Все категории</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="new-goods">
+                    <div class="new-goods__title">Новые товары</div>
+
+                    <div class="cards">
+
+                        {% for el in four_new_products %}
+                        <div class="card">
+                            <a href="{{ url_for('product', id=el.id) }}" class="card__link">
+                                <div class="card__top">
+                                    <img src="{{ url_for('static', filename=(el.image.split(' '))[0]) }}" alt="card" class="card__img">
+                                    <div class="card__type type_new">new</div>
+                                </div>
+
+                                <div class="card__bottom">
+                                    <div class="card__title">{{el.title}}</div>
+                                    <div class="card__text">{{el.desc_opt}}</div>
+                                    <div class="card__price price_popular">Цена:<span>{{ el.price }} бел.руб</span></div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </section>
+
+                <section class="all-goods">
+                    <div class="all-goods__title">Все товары</div>
+
+                    <div class="cards">
+                        {% for el in four_new_products %}
+                        <div class="card">
+                            <a href="{{ url_for('product', id=el.id) }}" class="card__link">
+                                <div class="card__top">
+                                    <img src="{{ url_for('static', filename=(el.image.split(' '))[0]) }}" alt="card" class="card__img">
+                                </div>
+
+                                <div class="card__bottom">
+                                    <div class="card__title">{{el.title}}</div>
+                                    <div class="card__text">{{el.desc_opt}}</div>
+                                    <div class="card__price price_popular">Цена:<span>{{ el.price }} бел.руб</span></div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="all-goods__action">
+                        <a href="{{ url_for('all_products', page_num=1) }}" class="all-goods__button">Показать все</a>
+                    </div>
+
+                </section>
+            </div>
+        </div>
     </div>
-    <hr class="featurette-divider">
-
-
-
-    <div class="row">
-        <p>Categories</p>
-    {% for index in range(categories|length) %}
-      <div class="col">
-        <a href="category/{{categories[index]}}">{{categories[index]}}</a>
-        <img src="../{{cat_images[index]}}" alt="" width="50" height="50">
-      </div>
-    {% endfor %}
-        <a href="./categories/">All categories</a>
-    </div>
-
-    <hr class="featurette-divider">
-
-
-
-
-    <div class="row featurette">
-        <p>New products</p>
-{% for el in four_new_products %}
-      <div class="col">
-        {% if el.image %}
-        <img src="{{(el.image.split(' '))[0]}}" alt="" width="70" height="70">
-        {% else %}
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="70" height="70" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-        {% endif %}
-      </div>
-      <div class="col">
-        <h2 class="card-title">{{el.title}}</h2>
-        <!--<p class="lead">{{el.desc_opt}}</p>-->
-        <p><a class="btn btn-primary" href="product/{{el.id}}" role="button">Подробнее »</a></p>
-      </div>
-{% endfor %}
-    </div>
-
-    <hr class="featurette-divider">
-<div class="row featurette">
-        <p>All products</p>
-{% for el in four_products %}
-      <div class="col">
-        {% if el.image %}
-        <img src="{{(el.image.split(' '))[0]}}" alt="" width="70" height="70">
-        {% else %}
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="70" height="70" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-        {% endif %}
-      </div>
-      <div class="col">
-        <h2 class="card-title">{{el.title}}</h2>
-        <!--<p class="lead">{{el.desc_opt}}</p>-->
-        <p><a class="btn btn-primary" href="product/{{el.id}}" role="button">Подробнее »</a></p>
-      </div>
-{% endfor %}
-    <a href="../all_products/1">All products</a>
-    </div>
-    <hr class="featurette-divider">
-
-  </div><!-- /.container -->
-
-</main>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

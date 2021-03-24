@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block body %}
-<main>
+<main style="color: #000000">
   <div class="container marketing">
 
 <div class="row mt-5 pt-5">
         <p>Categories</p>
     {% for index in range(categories|length) %}
       <div class="col">
-        <a href="../category/{{categories[index]}}">{{categories[index]}}</a>
-        <img src="../{{cat_images[index].split(' ')[0]}}" alt="" width="50" height="50">
+        <a href="{{ url_for('category_product', category=categories[index]) }}">{{categories[index]}}</a>
+        <img src="{{ url_for('static', filename=cat_images[index]) }}" alt="" width="50" height="50">
       </div>
     {% endfor %}
     </div>
@@ -23,6 +23,5 @@
   </div><!-- /.container -->
 
 </main>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

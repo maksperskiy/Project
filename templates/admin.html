@@ -6,7 +6,7 @@ Admin
 
 {% block body %}
 <br>
-<table class="table table-striped table-sm table-hover my-5 py-5">
+<table style="color: #000000">
           <thead>
             <tr>
               <th>ID</th>
@@ -41,7 +41,7 @@ Admin
               <th>{{el.desc}}</th>
               <th>{{el.desc_opt}}</th>
               <th>{{el.visibility}}</th>
-              <th><a href="/product/{{el.id}}/visibility">{% if el.visibility==False %}Show{% else %}Hide{% endif %}</a></th>
+              <th><a href="{{ url_for('product_visibility', id=el.id) }}">{% if el.visibility==False %}Show{% else %}Hide{% endif %}</a></th>
               <th>{{el.price}}</th>
               <th>{{el.date.strftime("%Y-%m-%d-%H.%M.%S")}}</th>
               <th>{{el.image}}</th>
@@ -56,8 +56,8 @@ Admin
               <th>{{el.size}}</th>
               <th>{{el.weight}}</th>
               <th>{{el.guarantee}}</th>
-              <th><a href="/product/{{el.id}}/del">Delete</a></th>
-              <th><a href="/product/{{el.id}}/edit">Edit</a></th>
+              <th><a href="{{ url_for('delete', id=el.id) }}">Delete</a></th>
+              <th><a href="{{ url_for('edit', id=el.id) }}">Edit</a></th>
             </tr>
             {% endfor %}
 
@@ -66,7 +66,7 @@ Admin
 <br>
 <p><a class="btn btn-primary" href="create" role="button">Create new</a></p>
 <br>
-<table class="table table-striped table-sm table-hover my-5 py-5">
+<table style="color: #000000" class="table table-striped table-sm table-hover my-5 py-5">
           <thead>
             <tr>
               <th>ID</th>
@@ -88,7 +88,7 @@ Admin
             {% for el in orders %}
             <tr>
               <th>{{el.id}}</th>
-              <th><a href="product/{{el.product_id}}">{{el.product_id}}</a></th>
+              <th><a href="{{ url_for('product', id=el.product_id) }}">{{el.product_id}}</a></th>
               <th>{{el.date.strftime("%Y-%m-%d-%H.%M.%S")}}</th>
               <th>{{el.name}}</th>
               <th>{{el.phone}}</th>
@@ -97,9 +97,9 @@ Admin
               <th>{{el.email}}</th>
               <th>{{el.comment}}</th>
               <th>{{el.processed}}</th>
-              <th><a href="/order/{{el.id}}/process">{% if el.processed==False %}Process{% else %}Cancel process{% endif %}</a></th>
+              <th><a href="{{ url_for('order_process', id=el.id) }}">{% if el.processed==False %}Process{% else %}Cancel process{% endif %}</a></th>
               <th>---</th>
-              <th><a href="/order/{{el.id}}/del">Delete</a></th>
+              <th><a href="{{ url_for('order_delete', id=el.id) }}">Delete</a></th>
             </tr>
             {% endfor %}
 
