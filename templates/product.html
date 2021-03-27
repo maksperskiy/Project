@@ -32,7 +32,7 @@
 
                         <div class="info__characteristic">
 
-                              {% if product.categories %}<div class="characteristic__name">Категория: <span class="characteristic__value">{{product.price}}</span></div>{% endif %}
+                              {% if product.categories %}<div class="characteristic__name">Категория: <span class="characteristic__value">{{product.categories}}</span></div>{% endif %}
                               {% if product.author %}<div class="characteristic__name">Автор: <span class="characteristic__value">{{product.author}}</span></div>{% endif %}
                               {% if product.assignment %}<div class="characteristic__name">Назначение: <span class="characteristic__value">{{product.assignment}}</span></div>{% endif %}
                               {% if product.material %}<div class="characteristic__name">Материал: <span class="characteristic__value">{{product.material}}</span></div>{% endif %}
@@ -97,8 +97,8 @@
 {% endif %}
 
 
-<div class="col-md-6 py-5">
-    <h2>{{ product.title }}</h2>
+<!--<div class="col-md-6 py-5">
+        <h2>{{ product.title }}</h2>
     <p>{{ product.desc_opt }}</p>
     <form action="{{ url_for('buy', product_id=product.id) }}" method="post">
         <input type="text" name="name" id="name" class="form-control" placeholder="Name"><br>
@@ -109,7 +109,32 @@
         <textarea name="comment" id="comment" class="form-control" placeholder="Comment"></textarea><br>
         <input type="submit" value="Buy">
     </form>
-</div>
+</div>-->
+    <div class="modal hide">
+        <div class="modal__inner">
+            <div class="modal__content">
+                <div class="modal__top">
+                    <div class="modal__title">Оформление заказа</div>
+                    <div class="modal__close"></div>
+                </div>
+                <div class="modal__text">Контактные данные</div>
+                <form action="{{ url_for('buy', product_id=product.id) }}" class="modal__form" method="post">
+                    <input type="text" name="name" class="modal__input" placeholder="ФИО">
+                    <input type="text" name="phone" class="modal__input" placeholder="Телефон">
+                    <input type="text" name="address" class="modal__input" placeholder="Адрес">
+                    <input type="text" name="post_index" class="modal__input" placeholder="Индекс">
+                    <input type="text" name="email" class="modal__input" placeholder="Электронная почта">
+                    <!--<input type="text" name="comment" class="modal__input" placeholder="Комментарий">-->
+                    <textarea name="comment" class="modal__input" placeholder="Comment"></textarea><br>
+
+                    <div class="modal__price">Цена: <span>{{ product.price }} бел.руб </span></div>
+                    <input class="modal__button" type="submit" value="Подтвердить заказ">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 
 {% endblock %}

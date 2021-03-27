@@ -63,15 +63,13 @@ Home page
                     <div class="categories__columns">
                         <div class="categories__col">
                             {% for i in range(2) %}
-                            <div class="categorie__item">
+                            <div class="categorie__item categorie__item_min">
                                 <img class="categorie__img" src="{{ url_for('static', filename=cat_images[i]) }}" alt="categogrie__img">
 
-                                <div class="categorie__layer">
-                                    <div class="categorie__info">
-                                        <div class="categorie__title">{{ categories[i] }}</div>
+                                <div class="categorie__info">
+                                    <div class="categorie__title">{{ categories[i] }}</div>
 
-                                        <a href="{{ url_for('category_product', category=categories[i]) }}" class="categorie__button">Посмотреть</a>
-                                    </div>
+                                    <a href="{{ url_for('category_product', category=categories[i]) }}" class="categorie__button">Посмотреть</a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -79,53 +77,45 @@ Home page
                         </div>
 
                         <div class="categories__col">
-                            <div class="categorie__item">
+                            <div class="categorie__item categorie__item_max">
                                 <img class="categorie__img" src="{{ url_for('static', filename=cat_images[2]) }}" alt="categogrie__img">
+                                <div class="categorie__info">
+                                    <div class="categorie__title">{{ categories[2] }}</div>
 
-                                <div class="categorie__layer">
-                                    <div class="categorie__info">
-                                        <div class="categorie__title">{{ categories[2] }}</div>
-
-                                        <a href="{{ url_for('category_product', category=categories[2]) }}" class="categorie__button">Посмотреть</a>
-                                    </div>
+                                    <a href="{{ url_for('category_product', category=categories[2]) }}" class="categorie__button">Посмотреть</a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="categories__col">
-                            <div class="categorie__item">
+                            <div class="categorie__item categorie__item_max">
                                 <img class="categorie__img" src="{{ url_for('static', filename=cat_images[3]) }}" alt="categogrie__img">
 
-                                <div class="categorie__layer">
-                                    <div class="categorie__info">
-                                        <div class="categorie__title">{{ categories[3] }}</div>
+                                <div class="categorie__info">
+                                    <div class="categorie__title">{{ categories[3] }}</div>
 
-                                        <a href="{{ url_for('category_product', category=categories[3]) }}" class="categorie__button">Посмотреть</a>
-                                    </div>
+                                    <a href="{{ url_for('category_product', category=categories[3]) }}" class="categorie__button">Посмотреть</a>
                                 </div>
+
                             </div>
                         </div>
 
                         <div class="categories__col">
-                            <div class="categorie__item">
+                            <div class="categorie__item categorie__item_min">
                                 <img class="categorie__img" src="{{ url_for('static', filename=cat_images[4]) }}" alt="categogrie__img">
 
-                                <div class="categorie__layer">
-                                    <div class="categorie__info">
-                                        <div class="categorie__title">{{ categories[4] }}</div>
+                                <div class="categorie__info">
+                                    <div class="categorie__title">{{ categories[4] }}</div>
 
-                                        <a href="{{ url_for('category_product', category=categories[4]) }}" class="categorie__button">Посмотреть</a>
-                                    </div>
+                                    <a href="{{ url_for('category_product', category=categories[4]) }}" class="categorie__button">Посмотреть</a>
                                 </div>
                             </div>
 
-                            <div class="categorie__item">
+                            <div class="categorie__item categorie__item_min">
                                 <img class="categorie__img" src="{{ url_for('static', filename='images/dest/photo/all_cat_img.jpg') }}" alt="categogrie__img">
 
-                                <div class="categorie__layer">
-                                    <div class="categorie__info">
-                                        <a href="{{ url_for('categories') }}" class="categorie__button">Все категории</a>
-                                    </div>
+                                <div class="categorie__info">
+                                    <a href="{{ url_for('categories') }}" class="categorie__button">Все категории</a>
                                 </div>
                             </div>
                         </div>
