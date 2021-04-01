@@ -68,7 +68,7 @@ def index():
 
     four_popular_products = db.session.query(Product) \
         .outerjoin(Order, Product.id == Order.product_id) \
-        .filter(Product.date >= datetime(datetime.today().year, datetime.today().month, day=1)) \
+        .filter(Order.date >= datetime(datetime.today().year, datetime.today().month, day=1)) \
         .filter(Product.visibility == True) \
         .group_by(Product.id) \
         .order_by(db.func.count(Order.product_id).desc()) \

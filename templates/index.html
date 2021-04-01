@@ -36,6 +36,7 @@ Home page
                     <div class="popular-goods__title">Популярные товары</div>
 
                     <div class="cards">
+
                         {% for el in four_popular_products %}
                         <div class="card">
                             <a href="{{ url_for('product', id=el.id) }}" class="card__link">
@@ -53,8 +54,8 @@ Home page
                         </div>
                         {% endfor %}
 
-
                     </div>
+
                 </section>
 
                 <section class="categories">
