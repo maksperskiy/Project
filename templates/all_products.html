@@ -37,9 +37,9 @@ All products
                         <div class="pagination__content">
 
                             {% if products.has_prev %}
-                                <a href="{{ url_for('all_products', page_num=products.prev_num) }}" class="pagination__button-left pagination__button">Prev</a>
+                                <a href="{{ url_for('all_products', page_num=products.prev_num) }}" class="pagination__button-prev"></a>
                             {% else %}
-                                <a href="#" class="pagination__button-left pagination__button">Prev</a>
+                                <p class="pagination__button-prev_active"></p>
                             {% endif %}
 
                             {% for page in products.iter_pages(left_edge=3, right_edge=4) %}
@@ -47,15 +47,15 @@ All products
                                 {% if page != products.page %}
                                 <a href="{{ url_for('all_products', page_num=page) }}" class="pagination__item">{{ page }}</a>
                                 {% else %}
-                                <a href="#" class="pagination__item">{{ page }}</a>
+                                <p class="pagination__item pagination__item_active">{{ page }}</p>
                                 {% endif %}
                             {% endif %}
                             {% endfor %}
 
                             {% if products.has_next %}
-                                <a href="{{ url_for('all_products', page_num=products.next_num) }}" class="pagination__button-right pagination__button">Next</a>
+                                <a href="{{ url_for('all_products', page_num=products.next_num) }}" class="pagination__button-next"></a>
                             {% else %}
-                                <a href="#" class="pagination__button-right pagination__button">Next</a>
+                                <p class="pagination__button-next_active"></p>
                             {% endif %}
 
                         </div>
